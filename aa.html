@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For Harsiidhi</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@300;500&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #fff0f6 0%, #f8e1ff 100%);
+            position: fixed;
+        }
+
+        .sunflower {
+            position: absolute;
+            font-size: 3rem;
+            animation: float 10s infinite ease-in-out;
+            z-index: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            user-select: none;
+            opacity: 0.9;
+            transform-origin: center;
+        }
+
+        .sunflower.yellow { color: #FFD700; }
+        .sunflower.pink { color: #FFB6C1; }
+        .sunflower.orange { color: #FFA500; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(3deg); }
+        }
+
+        .card {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 85%;
+            max-width: 450px;
+            padding: 25px;
+            background: rgba(255, 253, 245, 0.92);
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(206, 147, 216, 0.25);
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            z-index: 10;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(2.2rem, 7vw, 3.2rem);
+            margin: 0 0 15px 0;
+            color: #c86fc9;
+        }
+
+        p {
+            font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+            line-height: 1.6;
+            color: #8e5a78;
+            margin: 15px 0;
+        }
+
+        .sunflower-icon {
+            color: #FFD700;
+            font-size: 1.8rem;
+            display: inline-block;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="sunflower-field"></div>
+
+    <div class="card">
+        <h1>#HARSIIDHI is AWESOME</h1>
+        <p>
+            Make sure to get a good night’s sleep tonight. Rest well, take care of yourself, and have a great day tomorrow. You’re appreciated more than you know.
+            <br>
+            <span style="display: flex; justify-content: center; gap: 10px;">
+              <span>Sleep awesomely and make sure you dream about us 🤭</span>
+            </span>
+          </p>
+          <div class="sunflower-icon">🌻 🌻 🌻</div>
+          
+    </div>
+
+    <script>
+        function createSunflowers() {
+            const container = document.getElementById('sunflower-field');
+            const colors = ['yellow', 'pink', 'orange'];
+            const placedFlowers = [];
+            const minDistance = 60;
+            
+            for (let i = 0; i < 50; i++) {
+                const flower = document.createElement('div');
+                flower.className = `sunflower ${colors[i % 3]}`;
+                flower.innerHTML = '🌻';
+                
+                let attempts = 0;
+                let x, y;
+                let positionFound = false;
+                
+                while (attempts < 100 && !positionFound) {
+                    x = Math.random() * 85 + 5;
+                    y = Math.random() * 85 + 5;
+                    
+                    let tooClose = false;
+                    for (const placed of placedFlowers) {
+                        const dx = (x - placed.x) * window.innerWidth / 100;
+                        const dy = (y - placed.y) * window.innerHeight / 100;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (distance < minDistance) {
+                            tooClose = true;
+                            break;
+                        }
+                    }
+                    
+                    if (!tooClose) {
+                        positionFound = true;
+                    }
+                    
+                    attempts++;
+                }
+                
+                if (positionFound) {
+                    flower.style.left = `${x}vw`;
+                    flower.style.top = `${y}vh`;
+                    flower.style.fontSize = `${3 + Math.random() * 1.5}rem`;
+                    flower.style.animationDelay = `${Math.random() * 2}s`;
+                    
+                    container.appendChild(flower);
+                    placedFlowers.push({x, y});
+                }
+            }
+        }
+
+        document.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
+        window.onload = createSunflowers;
+        window.addEventListener('resize', () => {
+            document.getElementById('sunflower-field').innerHTML = '';
+            createSunflowers();
+        });
+    </script>
+</body>
+</html>
